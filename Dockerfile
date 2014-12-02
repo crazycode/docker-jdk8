@@ -14,18 +14,15 @@ RUN apt-get update
 RUN apt-get install oracle-java8-installer -y
 RUN apt-get install oracle-java8-set-default -y
 
-RUN useradd -m service
 RUN mkdir -p /app/service
 RUN mkdir -p /app/logs
 RUN mkdir -p /app/data
-RUN chown -R service:service /app
 
 # Cleanup test
 RUN apt-get -qq clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/oracle-jdk8-installer
 
-USER service
 WORKDIR /app/service
 VOLUME /app/logs
 VOLUME /app/data
 
-ENV HOME /home/service
+ENV HOME /app/service
