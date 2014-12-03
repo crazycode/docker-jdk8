@@ -1,28 +1,23 @@
-FROM ubuntu:latest
+FROM debian:wheezy
 
 MAINTAINER crazycode
 
-RUN apt-get update
-RUN apt-get install python-software-properties software-properties-common -y
-RUN add-apt-repository ppa:webupd8team/java -y
+ENV DEBIAN_FRONTEND noninteractive
+
+
+RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee /etc/apt/sources.list.d/webupd8team-java.list
+RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
 
 # Accept license
 RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 
-# Install Java
-RUN apt-get update
-RUN apt-get install oracle-java8-installer -y
-RUN apt-get install oracle-java8-set-default -y
-
-RUN mkdir -p /app/service
-RUN mkdir -p /app/logs
-RUN mkdir -p /app/data
+RUN apt-get update \
+   && apt-get install -y oracle-java8-installer
+   && apt-get install -y oracle-java8-set-default maven
 
 # Cleanup test
 RUN apt-get -qq clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/oracle-jdk8-installer
 
-WORKDIR /app/service
-VOLUME /app/logs
-VOLUME /app/data
-
-ENV HOME /app/service
+WORKDIR /root
+CMD ["/bin/bash"]
