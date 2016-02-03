@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM buildpack-deps:jessie-scm
 
 MAINTAINER crazycode
 
