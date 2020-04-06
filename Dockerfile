@@ -1,8 +1,9 @@
-FROM buildpack-deps:jessie-scm
+FROM buildpack-deps:buster-scm
 
 MAINTAINER crazycode
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV LANG C.UTF-8
 
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee /etc/apt/sources.list.d/webupd8team-java.list
 RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list
@@ -13,10 +14,8 @@ RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true 
 
 RUN apt-get update \
    && apt-get install -y oracle-java8-installer \
-   && apt-get install -y oracle-java8-set-default
-
-# Cleanup test
-RUN apt-get -qq clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/oracle-jdk8-installer
+   && apt-get install -y oracle-java8-set-default \
+   && apt-get -qq clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/oracle-jdk8-installer
 
 WORKDIR /root
 CMD ["/bin/bash"]
