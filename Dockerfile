@@ -1,4 +1,4 @@
-FROM buildpack-deps:buster-scm
+FROM buildpack-deps:jessie-scm
 
 MAINTAINER crazycode
 
